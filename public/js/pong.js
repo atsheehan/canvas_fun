@@ -62,13 +62,8 @@ function keyUp(event) {
 function updatePaddle(paddle) {
   var paddleVel = 0;
 
-  if (paddle.movingUp) {
-    paddleVel -= PADDLE_SPEED;
-  }
-
-  if (paddle.movingDown) {
-    paddleVel += PADDLE_SPEED;
-  }
+  if (paddle.movingUp) paddleVel -= PADDLE_SPEED;
+  if (paddle.movingDown) paddleVel += PADDLE_SPEED;
 
   paddle.y += paddleVel;
 
@@ -81,33 +76,56 @@ function updatePaddle(paddle) {
   }
 }
 
+function collisionExistsBetween(ball, paddle) {
+  return (
+    // ball is within y-boundary of paddle
+    (ball.y + BALL_RADIUS >= paddle.y &&
+     ball.y - BALL_RADIUS <= paddle.y + PADDLE_HEIGHT)
+
+      &&
+
+    // ball has crossed over the left edge of the paddle
+    ((ball.xVel > 0 &&
+      ball.x + BALL_RADIUS > paddle.x &&
+      ball.x - BALL_RADIUS <= paddle.x)
+
+     ||
+
+     // or ball has crossed over the right edge
+     (ball.xVel < 0 &&
+      ball.x - BALL_RADIUS < paddle.x + PADDLE_WIDTH &&
+      ball.x + BALL_RADIUS >= paddle.x + PADDLE_WIDTH)));
+}
+
+function isBeyondEdges(ball) {
+  return (ball.x - BALL_RADIUS > CANVAS_WIDTH || ball.x + BALL_RADIUS < 0);
+}
+
+function hasCollidedWithWall(ball) {
+  return (
+    (ball.yVel > 0 && ball.y + BALL_RADIUS > CANVAS_HEIGHT) ||
+    (ball.yVel < 0 && ball.y - BALL_RADIUS < 0));
+}
+
+function resetBall(ball) {
+  ball.x = CANVAS_WIDTH / 2;
+  ball.y = CANVAS_HEIGHT / 2;
+}
+
 function updateBall(ball) {
   ball.x += ball.xVel;
   ball.y += ball.yVel;
 
-  if (ball.x - BALL_RADIUS > CANVAS_WIDTH || ball.x + BALL_RADIUS < 0) {
-
-    ball.x = CANVAS_WIDTH / 2;
-    ball.y = CANVAS_HEIGHT / 2;
+  if (isBeyondEdges(ball)) {
+    resetBall(ball);
     livesRemaining--;
 
-  } else if ((ball.xVel > 0 &&
-         ball.x + BALL_RADIUS > rightPaddle.x &&
-         ball.x - BALL_RADIUS <= rightPaddle.x &&
-         ball.y + BALL_RADIUS >= rightPaddle.y &&
-         ball.y - BALL_RADIUS <= rightPaddle.y + PADDLE_HEIGHT) ||
-        (ball.x - BALL_RADIUS < leftPaddle.x + PADDLE_WIDTH &&
-         ball.x + BALL_RADIUS >= leftPaddle.x + PADDLE_WIDTH &&
-         ball.y + BALL_RADIUS >= leftPaddle.y &&
-         ball.y - BALL_RADIUS <= leftPaddle.y + PADDLE_HEIGHT)) {
-
+  } else if (collisionExistsBetween(ball, leftPaddle) ||
+             collisionExistsBetween(ball, rightPaddle)) {
     ball.xVel = -ball.xVel;
     score++;
-  }
 
-  if ((ball.yVel > 0 && ball.y + BALL_RADIUS > CANVAS_HEIGHT) ||
-      (ball.yVel < 0 && ball.y - BALL_RADIUS < 0)) {
-
+  } else if (hasCollidedWithWall(ball)) {
     ball.yVel = -ball.yVel;
   }
 
