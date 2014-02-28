@@ -1,4 +1,4 @@
-body {
+#home {
     background-image: url("/images/stars.gif");
     background-color: black;
     color: red;
@@ -6,6 +6,10 @@ body {
 
 .embiggen {
     font-size: 5em;
+}
+
+.center {
+    text-align: center;
 }
 
 @keyframes blink {
