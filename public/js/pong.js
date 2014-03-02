@@ -204,13 +204,23 @@ function drawCircle(ctx, x, y, radius, color) {
   ctx.fill();
 }
 
+function drawTextCentered(ctx, text, x, y, fontHeight, fontName) {
+  ctx.font = fontHeight + 'px ' + fontName;
+  var textWidth = ctx.measureText(text).width;
+
+  var actualX = x - (textWidth / 2);
+  var actualY = y - (fontHeight / 2);
+
+  ctx.fillText(text, actualX, actualY);
+}
+
 function draw() {
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   var color = 'white';
 
   drawRect(ctx, leftPaddle.x, leftPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT, color);
   drawRect(ctx, rightPaddle.x, rightPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT, color);
-  drawCircle(ctx, ball.x, ball.y, BALL_RADIUS, 'white');
+  drawCircle(ctx, ball.x, ball.y, BALL_RADIUS, color);
 
   ctx.font = '24px monospace';
   ctx.fillText("lives: " + livesRemaining, 0, 24);
@@ -219,7 +229,8 @@ function draw() {
   ctx.fillText("score: " + score, CANVAS_WIDTH - 200, 24);
 
   if (gameOver) {
-    ctx.fillText("GAME OVER", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+    drawTextCentered(ctx, 'GAME OVER', CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2,
+                     24, 'monospace');
   }
 }
 
