@@ -1,3 +1,4 @@
+var SPACE_KEY = 20;
 var A_KEY = 65;
 var Q_KEY = 81;
 var P_KEY = 80;

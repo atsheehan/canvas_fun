@@ -14,7 +14,7 @@ var LEFT_PADDLE_START_X = CANVAS_WIDTH / 10;
 var RIGHT_PADDLE_START_X = (9 * CANVAS_WIDTH / 10) - PADDLE_WIDTH;
 
 var PADDLE_SPEED = 5;
-var BALL_SPEED = 3;
+var INITIAL_BALL_SPEED = 3;
 
 var leftPaddle = {
   x: LEFT_PADDLE_START_X,
@@ -33,13 +33,28 @@ var rightPaddle = {
 var ball = {
   x: CANVAS_WIDTH / 2,
   y: CANVAS_HEIGHT / 2,
-  xVel: BALL_SPEED,
-  yVel: BALL_SPEED
+  xVel: INITIAL_BALL_SPEED,
+  yVel: 0,
+  speed: INITIAL_BALL_SPEED
 };
 
 var gameOver = false;
 var livesRemaining = 3;
 var score = 0;
+
+function randomNumberBetween(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function rotateVector(vec, radians) {
+  var cos = Math.cos(radians);
+  var sin = Math.sin(radians);
+
+  return {
+    x: (vec.x * cos) - (vec.y * sin),
+    y: (vec.x * sin) + (vec.y * cos)
+  };
+}
 
 function keyDown(event) {
   switch (event.keyCode) {
@@ -122,8 +137,16 @@ function updateBall(ball) {
 
   } else if (collisionExistsBetween(ball, leftPaddle) ||
              collisionExistsBetween(ball, rightPaddle)) {
-    ball.xVel = -ball.xVel;
+
+    ball.speed++;
     score++;
+
+    var rotation = randomNumberBetween(-Math.PI / 4, Math.PI / 4);
+    var newVel = rotateVector({ x: ball.speed, y: 0 }, rotation);
+    var sign = ball.xVel < 0 ? -1 : 1;
+
+    ball.xVel = -sign * newVel.x;
+    ball.yVel = newVel.y;
 
   } else if (hasCollidedWithWall(ball)) {
     ball.yVel = -ball.yVel;
