@@ -35,7 +35,8 @@ var ball = {
   y: CANVAS_HEIGHT / 2,
   xVel: INITIAL_BALL_SPEED,
   yVel: 0,
-  speed: INITIAL_BALL_SPEED
+  speed: INITIAL_BALL_SPEED,
+  isStuck: true
 };
 
 var gameOver = false;
@@ -62,6 +63,7 @@ function keyDown(event) {
   case A_KEY: leftPaddle.movingDown = true;  break;
   case P_KEY: rightPaddle.movingUp = true;   break;
   case L_KEY: rightPaddle.movingDown = true; break;
+  case SPACE_KEY: ball.isStuck = false;      break;
   }
 }
 
@@ -125,6 +127,7 @@ function hasCollidedWithWall(ball) {
 function resetBall(ball) {
   ball.x = CANVAS_WIDTH / 2;
   ball.y = CANVAS_HEIGHT / 2;
+  ball.isStuck = true;
 }
 
 function updateBall(ball) {
@@ -161,7 +164,10 @@ function tick() {
   if (!gameOver) {
     updatePaddle(leftPaddle);
     updatePaddle(rightPaddle);
-    updateBall(ball);
+
+    if (!ball.isStuck) {
+      updateBall(ball);
+    }
   }
 }
 
