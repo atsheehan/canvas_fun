@@ -58,6 +58,8 @@ function rotateVector(vec, radians) {
 }
 
 function keyDown(event) {
+  event.preventDefault();
+
   switch (event.keyCode) {
   case Q_KEY: leftPaddle.movingUp = true;    break;
   case A_KEY: leftPaddle.movingDown = true;  break;
@@ -68,6 +70,8 @@ function keyDown(event) {
 }
 
 function keyUp(event) {
+  event.preventDefault();
+
   switch (event.keyCode) {
   case Q_KEY: leftPaddle.movingUp = false;    break;
   case A_KEY: leftPaddle.movingDown = false;  break;
@@ -127,6 +131,9 @@ function hasCollidedWithWall(ball) {
 function resetBall(ball) {
   ball.x = CANVAS_WIDTH / 2;
   ball.y = CANVAS_HEIGHT / 2;
+  ball.xVel = INITIAL_BALL_SPEED;
+  ball.yVel = 0;
+  ball.speed = INITIAL_BALL_SPEED;
   ball.isStuck = true;
 }
 
