@@ -152,8 +152,12 @@ function updateBall(ball) {
   ball.y += ball.yVel;
 
   if (isBeyondEdges(ball)) {
-    resetBall(ball);
-    livesRemaining--;
+    if (livesRemaining === 0) {
+      gameOver = true;
+    } else {
+      livesRemaining--;
+      resetBall(ball);
+    }
 
   } else if (collisionExistsBetween(ball, leftPaddle) ||
              collisionExistsBetween(ball, rightPaddle)) {
@@ -170,10 +174,6 @@ function updateBall(ball) {
 
   } else if (hasCollidedWithWall(ball)) {
     ball.yVel = -ball.yVel;
-  }
-
-  if (livesRemaining < 0) {
-    gameOver = true;
   }
 }
 
