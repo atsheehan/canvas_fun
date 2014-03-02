@@ -58,7 +58,7 @@ function rotateVector(vec, radians) {
 }
 
 function keyDown(event) {
-  event.preventDefault();
+  var handled = true;
 
   switch (event.keyCode) {
   case Q_KEY: leftPaddle.movingUp = true;    break;
@@ -66,17 +66,27 @@ function keyDown(event) {
   case P_KEY: rightPaddle.movingUp = true;   break;
   case L_KEY: rightPaddle.movingDown = true; break;
   case SPACE_KEY: ball.isStuck = false;      break;
+  default: handled = false;                  break;
+  }
+
+  if (handled) {
+    event.preventDefault();
   }
 }
 
 function keyUp(event) {
-  event.preventDefault();
+  var handled = true;
 
   switch (event.keyCode) {
   case Q_KEY: leftPaddle.movingUp = false;    break;
   case A_KEY: leftPaddle.movingDown = false;  break;
   case P_KEY: rightPaddle.movingUp = false;   break;
   case L_KEY: rightPaddle.movingDown = false; break;
+  default: handled = false;                  break;
+  }
+
+  if (handled) {
+    event.preventDefault();
   }
 }
 
