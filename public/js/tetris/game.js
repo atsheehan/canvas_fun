@@ -67,6 +67,17 @@ function draw(game) {
       }
     }
   }
+
+  for (var row = 0; row < ROWS; row++) {
+    for (var col = 0; col < COLUMNS; col++) {
+      if (game.grid[row][col] !== 0) {
+        var x = GRID_X + (col * BLOCK_SIZE);
+        var y = GRID_Y + (row * BLOCK_SIZE);
+
+        drawRect(context, x, y, BLOCK_SIZE, BLOCK_SIZE, 'red');
+      }
+    }
+  }
 }
 
 function loop(game, time) {
@@ -78,8 +89,23 @@ function loop(game, time) {
   });
 }
 
+function generateGrid() {
+  var grid = [];
+
+  for (var row = 0; row < ROWS; row++) {
+    grid[row] = [];
+
+    for (var col = 0; col < COLUMNS; col++) {
+      grid[row][col] = 0;
+    }
+  }
+
+  return grid;
+}
+
 function run() {
   var game = {
+    grid: generateGrid(),
     currentShape: { x: 0, y: 0, index: 0, rotation: 0 }
   };
 
