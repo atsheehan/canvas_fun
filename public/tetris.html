@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tetris</title>
+    <style>
+      body {
+        background: #dddddd;
+      }
+
+      #canvas {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        background: #000000;
+        border: thin inset #aaaaaa;
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="canvas" width="640" height="480">
+      Canvas not supported
+    </canvas>
+
+    <div class="center">
+      <h1>Tetris!</h1>
+
+      <h2>Controls</h2>
+
+      <ul>
+        <li>Left: Move shape left</li>
+        <li>Right: Move shape right</li>
+        <li>Down: Drop one space</li>
+        <li>Up: Rotate clockwise</li>
+        <li>Space: Drop to floor</li>
+      </ul>
+    </div>
+
+    <script src="/js/key_codes.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/tetris/shapes.js"></script>
+    <script src="/js/tetris/game.js"></script>
+  </body>
+</html>
